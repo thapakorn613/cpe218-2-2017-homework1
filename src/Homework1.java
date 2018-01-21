@@ -7,8 +7,8 @@ public class Homework1 {
 	public static Node rootNode = new Node();
     public static Node rootKeep = new Node();
     public static void main(String[] args) {
-        String str = "56+";
-        //str = args[0];
+        String str = "";
+        str = args[0];
         char [] list;
         ArrayList<Node> newNode = new ArrayList<Node>();
         list = str.toCharArray();
