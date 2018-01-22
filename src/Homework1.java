@@ -25,7 +25,7 @@ public class homework1 {
     static Node  root;
     static Stack<Character> keep = new Stack<Character>();
     public static void main(String[] args) {
-        String str = "55+";
+        String str = args[0];
         char [] list;
         list = str.toCharArray();
         for(char obj : list){
