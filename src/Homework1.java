@@ -49,8 +49,7 @@ public class Homework1 extends JPanel
         super(new GridLayout(1,0));
 
         //Create the nodes.
-        DefaultMutableTreeNode top =
-                new DefaultMutableTreeNode(root);
+        DefaultMutableTreeNode top = new DefaultMutableTreeNode(root.data);
         createNodes(top,root);
 
         //Create a tree that allows one selection at a time.
