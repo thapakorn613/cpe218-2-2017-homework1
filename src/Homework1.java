@@ -51,7 +51,7 @@ public class Homework1 extends JPanel
         //Create the nodes.
         DefaultMutableTreeNode top =
                 new DefaultMutableTreeNode(root);
-        createNodes(top,rootKeep);
+        createNodes(top,root);
 
         //Create a tree that allows one selection at a time.
         tree = new JTree(top);
@@ -157,14 +157,14 @@ public class Homework1 extends JPanel
         }
     }
 
-    private void createNodes(DefaultMutableTreeNode top,Node root1) {
-        DefaultMutableTreeNode left = new DefaultMutableTreeNode( root1.left.data);
-        DefaultMutableTreeNode right = new DefaultMutableTreeNode(root1.right.data);
-        if(isOperand(root1.data)){
+    private void createNodes(DefaultMutableTreeNode top,Node rootKeepInCreate) {
+        if(isOperand(rootKeepInCreate.data)){
+            DefaultMutableTreeNode left = new DefaultMutableTreeNode( rootKeepInCreate.left.data);
+            DefaultMutableTreeNode right = new DefaultMutableTreeNode(rootKeepInCreate.right.data);
             top.add(left);
-            //createNodes(left,root1);
+            createNodes(left,rootKeepInCreate.left);
             top.add(right);
-            //createNodes(right,root1);
+            createNodes(right,rootKeepInCreate.right);
         }
     }
 
@@ -255,7 +255,7 @@ public class Homework1 extends JPanel
     public static void main(String[] args) {
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
-        String str = "251-*32*+";
+        String str = args[0];
         char [] list;
         list = str.toCharArray();
         for(char obj : list){
