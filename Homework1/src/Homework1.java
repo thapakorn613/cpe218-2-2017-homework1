@@ -89,29 +89,26 @@ public class Homework1 extends JPanel
 
         //Add the split pane to this panel.
         add(splitPane);
+
     }
+
+
     static String KeepFor = "";
     /** Required by TreeSelectionListener interface. */
 
     public void valueChanged(TreeSelectionEvent e) {
+
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)
-                tree.getLastSelectedPathComponent();
+                           tree.getLastSelectedPathComponent();
 
         if (node == null) return;
-
-        Object nodeInfo = node.getUserObject();
+        Node nodeInfo = (Node) node.getUserObject();
         if (node.isLeaf()) {
-            BookInfo book = (BookInfo)nodeInfo;
-            displayURL(book.bookURL);
-            if (DEBUG) {
-                System.out.print(book.bookURL + ":  \n    ");
-            }
+            htmlPane.setText(nodeInfo.toString());
         } else {
-            displayURL(helpURL);
+            htmlPane.setText(String.valueOf(infix(nodeInfo)+" = "+calculator(nodeInfo)));
         }
-        if (DEBUG) {
-            System.out.println(nodeInfo.toString());
-        }
+
     }
 
     private class BookInfo {
@@ -205,18 +202,19 @@ public class Homework1 extends JPanel
             inorder(n.left);
         }
     }
-    public static void infix(Node n){
+    public static String infix(Node n){
         if(n != null){
             if(n.left != null && n.right != null ){
-                System.out.print("(");
+                return "(";
             }
             infix(n.left);
             System.out.print(n.data);
             infix(n.right);
             if(n.left != null && n.right != null ){
-                System.out.print(")");
+                return ")";
             }
         }
+        return null;
     }
     public static int calculator(Node n){
         if(n.data == '+'){  return calculator(n.left) + calculator(n.right);}
@@ -258,21 +256,22 @@ public class Homework1 extends JPanel
     public static void main(String[] args) {
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
+        String str = args[0];
+        char [] list;
+        list = str.toCharArray();
+        for(char obj : list){
+            keep.push(obj);
+        }
+        root = new Node(keep.pop());
+
+        inorder(root);
+        infix(root);
+
+        int sum = calculator(root);
+        System.out.println(" : "+sum);
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                String str = args[0];
-                char [] list;
-                list = str.toCharArray();
-                for(char obj : list){
-                    keep.push(obj);
-                }
-                root = new Node(keep.pop());
 
-                inorder(root);
-                infix(root);
-
-                int sum = calculator(root);
-                System.out.println(" : "+sum);
                 createAndShowGUI();
             }
         });
