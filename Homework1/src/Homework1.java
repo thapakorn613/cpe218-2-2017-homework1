@@ -1,3 +1,5 @@
+import com.sun.org.apache.xalan.internal.lib.NodeInfo;
+
 import javax.swing.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -49,9 +51,8 @@ public class Homework1 extends JPanel
         super(new GridLayout(1,0));
 
         //Create the nodes.
-        DefaultMutableTreeNode top =
-                new DefaultMutableTreeNode(root);
-        createNodes(top);
+        DefaultMutableTreeNode top =  new  DefaultMutableTreeNode(root.data);
+        createNodes(top,root);
 
         //Create a tree that allows one selection at a time.
         tree = new JTree(top);
@@ -89,8 +90,9 @@ public class Homework1 extends JPanel
         //Add the split pane to this panel.
         add(splitPane);
     }
-
+    static String KeepFor = "";
     /** Required by TreeSelectionListener interface. */
+
     public void valueChanged(TreeSelectionEvent e) {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)
                 tree.getLastSelectedPathComponent();
@@ -157,14 +159,14 @@ public class Homework1 extends JPanel
         }
     }
 
-    private void createNodes(DefaultMutableTreeNode top) {
-        DefaultMutableTreeNode left = new DefaultMutableTreeNode( root.left.data);
-        DefaultMutableTreeNode right = new DefaultMutableTreeNode(root.right.data);
-        if(isOperand(root.data)){
+    private void createNodes(DefaultMutableTreeNode top,Node rootKeepInCreate) {
+        if(isOperand(rootKeepInCreate.data)){
+            DefaultMutableTreeNode left = new DefaultMutableTreeNode( rootKeepInCreate.left.data);
+            DefaultMutableTreeNode right = new DefaultMutableTreeNode(rootKeepInCreate.right.data);
             top.add(left);
-            //createNodes(left);
+            createNodes(left,rootKeepInCreate.left);
             top.add(right);
-            //createNodes(right);
+            createNodes(right,rootKeepInCreate.right);
         }
     }
 
@@ -237,7 +239,7 @@ public class Homework1 extends JPanel
             return true;
         }
         else {
-            return false ;
+            return false ; // awdfev
         }
     }
     public static class Node{
@@ -245,6 +247,7 @@ public class Homework1 extends JPanel
         Node right;
         Node parent;
         char data;
+        String art;
         public Node(){
 
         }
@@ -255,21 +258,21 @@ public class Homework1 extends JPanel
     public static void main(String[] args) {
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
-        String str = "251-*32*+";
-        char [] list;
-        list = str.toCharArray();
-        for(char obj : list){
-            keep.push(obj);
-        }
-        root = new Node(keep.pop());
-        inorder(root);
-        infix(root);
-
-        int sum = calculator(root);
-        System.out.println(" : "+sum);
-
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
+                String str = args[0];
+                char [] list;
+                list = str.toCharArray();
+                for(char obj : list){
+                    keep.push(obj);
+                }
+                root = new Node(keep.pop());
+
+                inorder(root);
+                infix(root);
+
+                int sum = calculator(root);
+                System.out.println(" : "+sum);
                 createAndShowGUI();
             }
         });
